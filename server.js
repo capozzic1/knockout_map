@@ -1,56 +1,117 @@
-var Module = (function() {
-    'use strict';
+var Module = (function () {
+	'use strict';
 	//var levels = require('debug-levels').levels;
 	var debug = require('debug')('app');
-    var prettyjson = require('prettyjson');
-    var express = require('express');
-    var http = require('http');
-    var cors = require('cors');
-    var bodyParser = require('body-parser');
-    var app = express();
+	var prettyjson = require('prettyjson');
+	var express = require('express');
+	var http = require('http');
+	var cors = require('cors');
+	var bodyParser = require('body-parser');
+	var app = express();
 	//var dbg = debug('myserver:app');
 	var name = "server";
-	var yelpData = [];
-    const yelp = require('yelp-fusion');
+	var yelpInData = [];
 
-	
-	debug('testing');
-    const token = yelp.accessToken('euqH0_vzVDHpkWNkOrRvRg', 'zBM0qybw8qfqd6Rp9l9qef3i8niXOfM2oft0IHx68yxhBPNfehHA0r6pfULQunN9').then(response => {
-        // console.log(response.jsonBody.access_token);
-    }).catch(e => {
-        console.log(e);
-    });
-    //allow cors
-    app.use(cors());
-    // create application/json parser 
-    app.use(bodyParser.json());
-    // create application/x-www-form-urlencoded parser 
-    app.use(bodyParser.urlencoded({
-        extended: true
-    }));
+	const yelp = require('yelp-fusion');
+
+	//const client = yelp.client(token);
 
 
+	//allow cors
+	app.use(cors());
+	// create application/json parser
+	app.use(bodyParser.json());
+	// create application/x-www-form-urlencoded parser
+	app.use(bodyParser.urlencoded({
+			extended: true
+		}));
 
+	app.listen(3000, function () {
+		console.log('Example app listening on port 3000');
+	});
 
-    app.listen(3000, function() {
-        console.log('Example app listening on port 3000');
-    });
+	//handle post requests
+	app.post('/', function (req, res) {
 
-    //handle post requests
-    app.post('/', function(req, res) {
-		var test = req.body[0].name;
-		//console.log(test);
 		req.body.forEach((item) => {
-			yelpData.push(item);
+			yelpInData.push(item);
 		});
+
+		yelp.accessToken('euqH0_vzVDHpkWNkOrRvRg', 'zBM0qybw8qfqd6Rp9l9qef3i8niXOfM2oft0IHx68yxhBPNfehHA0r6pfULQunN9')
+		.then(response => {
+			const client = yelp.client(response.jsonBody.access_token);
+
+			debug('test');
+			//figure out how to access coords for yelp search client
+			var yelpOutData = [];
+			
+			
+			//yelpInData.forEach(function(item,i) {
+				//debug(item);
+				
+				//if (count !== yelpInData.length) {
+			
+				
+				yelpInData.forEach(function(item,i){
+				let coords = yelpInData[i].coords.lat + "," + yelpInData[i].coords.lng;
+				let name = yelpInData[i].name;
+
+
+				client.search({
+					term: name,
+					location: coords
+					
+				}).then(response => {
+					//debug(i);
+					//name, img url, url, review count, rating, price, location.display address, is closed,phone
+					yelpOutData.push({
+						name: response.jsonBody.businesses[0].name,
+						img: response.jsonBody.businesses[0].image_url,
+						hours: response.jsonBody.businesses[0].is_closed,
+						revcount: response.jsonBody.businesses[0].review_count,
+						rating: response.jsonBody.businesses[0].rating,
+						price: response.jsonBody.businesses[0].price,
+						location: response.jsonBody.businesses[0].location.display_address.toString(),
+						phone: response.jsonBody.businesses[0].display_phone
+					});
+					
+					//debug(count)
+					if (yelpOutData.length === yelpInData.length){
+						res.send(yelpOutData);
+						yelpInData = [];
+						yelpOutData = [];
+						//debug('equal len');
+					} else if (yelpOutData.length > yelpInData.length){
+						debug('over len');
+					}
+					
+					
+					
+					//debug(yelpOutData.length + "test");
+					//res.send(yelpOutData);
+					//res.send(yelpOutData);
+					//if(yelpOutData.length === yelpInData.length)
+					//return yelpOutData;
+
+				}).catch (e => {
+					console.log(e);
+				});
+				});
+				
+				//};
 		
-		
-        //var jsonData = JSON.parse(reqbody);
+			//});
+				
+				
+				
+				
+			}).catch (e => {
+				console.log(e);
+		});
 
+		//debug(yelpInData);
 
-        //console.log(typeof req.body);
-        //console.log(prettyjson.render(test));
-
-    });
+		//debug(client);
+	});
 
 })();

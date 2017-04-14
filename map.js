@@ -1,7 +1,7 @@
 //yelp info for each location
 //image of each location
 //weather for the area
-//learn how to use node's internal debugger
+//figure out how to make token work, because a promise is involved.
 //move on with getting data to Yelp
 var Module = (function () {
 	  
@@ -63,14 +63,16 @@ var Module = (function () {
 	
 	  //convert array to JSON 
 	  var jsonStr = JSON.stringify(locations);
-	
+	  var testArr = [];
 		$.ajax({
 		url: 'http://localhost:3000/',
 		type: "POST",
 		contentType: "application/json",  // <====
 		data: jsonStr,
 		success: function(data){
-		 //empty for now
+		 
+		 testArr.push(data);
+		 console.log(testArr);
 		}
 	});
 	 
