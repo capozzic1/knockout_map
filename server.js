@@ -63,7 +63,7 @@ var Module = (function () {
 					
 				}).then(response => {
 					//debug(i);
-					//name, img url, url, review count, rating, price, location.display address, is closed,phone
+					//name, img url, review count, rating, price, location.display address, is closed,phone
 					yelpOutData.push({
 						name: response.jsonBody.businesses[0].name,
 						img: response.jsonBody.businesses[0].image_url,
@@ -72,7 +72,8 @@ var Module = (function () {
 						rating: response.jsonBody.businesses[0].rating,
 						price: response.jsonBody.businesses[0].price,
 						location: response.jsonBody.businesses[0].location.display_address.toString(),
-						phone: response.jsonBody.businesses[0].display_phone
+						phone: response.jsonBody.businesses[0].display_phone,
+						url: response.jsonBody.businesses[0].url
 					});
 					
 					//debug(count)
