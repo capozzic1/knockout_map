@@ -153,22 +153,22 @@ var Module = function () {
 	var jsonStr = JSON.stringify(locations);
 
 	$.ajax({
-		url: 'http://localhost:3000/',
+		url: 'https://gentle-fortress-70127.herokuapp.com/p',
 		type: "POST",
 		contentType: "application/json", // <====
 		data: jsonStr,
 		success: function success(data) {
 
 			//yelpArr.push(data);
-			console.log(data);
+			data;
 			$.each(data, function (i, location) {
 				var htmlStr = "";
 				var hours = "";
-
-				if (!location.hours) {
-					hours = "Is open";
-				} else {
+				console.log(location.hours);
+				if (location.hours == false) {
 					hours = "Is closed";
+				} else {
+					hours = "Is open";
 				}
 
 				htmlStr += '<div class ="info">' + '<h2 class="name">' + location.name.toString() + '</h2>' + '<img class="buspic" src=' + location.img + " alt text='bus pic'" + '/>' + '<p class="hours">' + "<b>Open or closed: </b>" + hours + '</p>' + '<p class="reviews">' + "<b>Review count: </b>" + location.revcount + '</p>' + '<p class="rating">' + "<b>Rating: </b>" + location.rating + '</p>' + '<p class="price">' + "<b>Price range: </b>" + location.price + '</p>' + '<p class="location">' + "<b>Address: </b>" + location.location + '</p>' + '<p class="phone">' + "<b>Phone: </b>" + location.phone + '</p>' + '<a href="' + location.url + '">' + 'See more on yelp' + '</a>' + '</div>';
@@ -290,7 +290,7 @@ var Module = function () {
 				});
 
 				google.maps.event.addListener(markers[i], 'click', function () {
-					console.log(this.index);
+					this.index;
 					infoWindow.setContent([contentsNew[i]].toString());
 					infoWindow.open(map, markers[this.index]);
 					map.setZoom(16);

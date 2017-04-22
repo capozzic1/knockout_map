@@ -2,10 +2,9 @@
   "name": "komap",
   "version": "1.0.0",
   "description": "",
-  "main": "js/map.js",
+  "main": "server.js",
   "scripts": {
-    "start": "webpack --watch",
-	"webpack": "webpack"
+    "start": "node server.js"
   },
   "author": "",
   "license": "ISC",
@@ -24,8 +23,15 @@
   "dependencies": {
     "babel-cli": "^6.24.1",
     "babel-core": "^6.24.1",
+    "body-parser": "^1.17.1",
+    "cors": "^2.8.3",
     "debug": "^2.6.3",
     "debug-levels": "^0.2.0",
-    "express": "^4.15.2"
+    "express": "^4.15.2",
+	"yelp-fusion": "^1.0.3"
+  },
+  "engines": {
+    "node": "6.10.2",
+    "npm": "4.5.0"
   }
 }

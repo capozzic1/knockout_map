@@ -1,6 +1,5 @@
 
 
-//weather for the area
 
 
 
@@ -77,28 +76,28 @@ var Module = (function () {
 
 	];
 
-	//http://localhost:3000/
+
 
 	//convert array to JSON
 	var jsonStr = JSON.stringify(locations);
 
 	$.ajax({
-		url: 'http://localhost:3000/',
+		url: 'https://gentle-fortress-70127.herokuapp.com/p',
 		type: "POST",
 		contentType: "application/json", // <====
 		data: jsonStr,
 		success: function (data) {
 
-			//yelpArr.push(data);
-			console.log(data);
+		
+			(data);
 			$.each(data, function (i, location) {
 				var htmlStr = "";
 				var hours = "";
-
-				if (!location.hours) {
-					hours = "Is open";
-				} else {
+				console.log(location.hours);
+				if (location.hours == false) {
 					hours = "Is closed";
+				} else {
+					hours = "Is open";
 				}
 
 				htmlStr += '<div class ="info">' +
@@ -116,13 +115,13 @@ var Module = (function () {
 				contentsBefSort.push(htmlStr);
 
 			});
-			//console.log(contentsBefSort);
+		
 			sortArr(contentsBefSort);
-			//console.log(infoWindows);
-			//console.log(htmlStr);
-			//console.log(yelpArr);
+			
+
+	
 			if (ready) {
-				weatherData(function(data){
+				weatherData(function (data) {
 					console.log(data);
 					var city = data.name;
 					var currWeather = data.weather[0].description;
@@ -130,19 +129,18 @@ var Module = (function () {
 					var currTemp = data.main.temp;
 					var tempHi = data.main.temp_max;
 					var humid = data.main.humidity;
-					
+
 					var div = '<div class="weatherIn"></div>';
 					$('body').append(div);
-					
+
 					$('.weatherIn').append(
-					'<h2>Weather for Downtown ' + city + '</h2>' + 
-					'<p>Description: ' + currWeather + '</p>' + 
-					'<img src="' + pic + '" alt="Pic here" />' + 
-					'<p>Current temperature: ' + currTemp + '&#8457' + '</p>' + 
-					'<p>The high for today is ' + tempHi + '&#8457' +  '</p>' + 
-					'<p>Humidity: ' + humid + '</p>' 
-					);
-					
+						'<h2>Weather for Downtown ' + city + '</h2>' +
+						'<p>Description: ' + currWeather + '</p>' +
+						'<img src="' + pic + '" alt="Pic here" />' +
+						'<p>Current temperature: ' + currTemp + '&#8457' + '</p>' +
+						'<p>The high for today is ' + tempHi + '&#8457' + '</p>' +
+						'<p>Humidity: ' + humid + '</p>');
+
 				});
 				initMap();
 
@@ -180,31 +178,29 @@ var Module = (function () {
 			for (var i = 0; i < arr.length; i++) {
 
 				if (arr[i].indexOf(locations[j].name) > -1 || arr[i].indexOf(locations[j].name) == 0) {
-					//console.log("found");
-					//console.log(locations[j].name);
+					
+				
 
 					contentsNew[j] = arr[i];
 
-					//contents[j] =
+				
 
 				}
 			}
 		}
-		//console.log(contentsNew);
+		
 		ready = true;
 	};
-	
-	function weatherData(callback){
+
+	function weatherData(callback) {
 		var weather = 'http://api.openweathermap.org/data/2.5/weather?lat=36.168743&lon=-115.139866&units=imperial&APPID=ef73411c829a4563b61b64e76cb72976';
-		
+
 		$.ajax({
 			dataType: "jsonp",
 			url: weather,
 			success: callback
 		});
 	};
-	
-	
 
 	var initMap = function () {
 
@@ -233,10 +229,6 @@ var Module = (function () {
 
 				$('.btns').append('<li>' + contentsNew[i] + '</li>');
 
-				/*infoWindows[i] = new google.maps.InfoWindow({
-				content: contentsNew[i],
-				maxWidth: 300
-				});*/
 
 				var infoWindow = new google.maps.InfoWindow();
 
@@ -245,7 +237,7 @@ var Module = (function () {
 				});
 
 				google.maps.event.addListener(markers[i], 'click', function () {
-					console.log(this.index);
+					(this.index);
 					infoWindow.setContent([contentsNew[i]].toString());
 					infoWindow.open(map, markers[this.index]);
 					map.setZoom(16);
@@ -259,10 +251,10 @@ var Module = (function () {
 					infoWindow.open(map, markers[i]);
 					map.panTo(markers[i].getPosition());
 				});
-				
-				var mapCenter = new google.maps.LatLng(36.168743,-115.139866);
-				
-				google.maps.event.addListener(infoWindow, 'closeclick', function(){
+
+				var mapCenter = new google.maps.LatLng(36.168743, -115.139866);
+
+				google.maps.event.addListener(infoWindow, 'closeclick', function () {
 					map.setCenter(mapCenter);
 					map.setZoom(15);
 				});
