@@ -125,7 +125,7 @@ var Module = (function () {
 					console.log(data);
 					var city = data.name;
 					var currWeather = data.weather[0].description;
-					var pic = 'https://openweathermap.org/img/w/' + data.weather[0].icon + '.png';
+					var pic = 'http://openweathermap.org/img/w/' + data.weather[0].icon + '.png';
 					var currTemp = data.main.temp;
 					var tempHi = data.main.temp_max;
 					var humid = data.main.humidity;
@@ -193,7 +193,7 @@ var Module = (function () {
 	};
 
 	function weatherData(callback) {
-		var weather = 'http://api.openweathermap.org/data/2.5/weather?lat=36.168743&lon=-115.139866&units=imperial&APPID=ef73411c829a4563b61b64e76cb72976';
+		var weather = 'https://api.openweathermap.org/data/2.5/weather?lat=36.168743&lon=-115.139866&units=imperial&APPID=ef73411c829a4563b61b64e76cb72976';
 
 		$.ajax({
 			dataType: "jsonp",
