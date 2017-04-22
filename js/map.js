@@ -125,7 +125,7 @@ var Module = (function () {
 					console.log(data);
 					var city = data.name;
 					var currWeather = data.weather[0].description;
-					var pic = 'http://openweathermap.org/img/w/' + data.weather[0].icon + '.png';
+					var pic = 'https://openweathermap.org/img/w/' + data.weather[0].icon + '.png';
 					var currTemp = data.main.temp;
 					var tempHi = data.main.temp_max;
 					var humid = data.main.humidity;
