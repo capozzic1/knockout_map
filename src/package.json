@@ -18,7 +18,7 @@
     "cors": "^2.8.3",
     "prettyjson": "^1.2.1",
     "webpack": "^2.4.1",
-    "yelp-fusion": "^1.0.3"
+    "yelp-fusion": "^1.0.4"
   },
   "dependencies": {
     "babel-cli": "^6.24.1",
@@ -28,8 +28,7 @@
     "debug": "^2.6.3",
     "debug-levels": "^0.2.0",
     "express": "^4.15.2",
-    "promise": "^8.0.1",
-    "yelp-fusion": "^1.0.3"
+    "promise": "^8.0.1"
   },
   "engines": {
     "node": "6.10.2",

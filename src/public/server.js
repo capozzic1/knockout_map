@@ -1,19 +1,19 @@
-var Module = (function() {
+const Module = (function() {
   'use strict';
 
-  var cors = require('cors');
-  var debug = require('debug')('app');
-  var express = require('express');
-  var http = require('http');
-  var bodyParser = require('body-parser');
-  var app = express();
-  var name = "server";
-  var yelpInData = [];
-  var Promise = require('promise');
-  var port = process.env.PORT || 8080;
+  const cors = require('cors');
+  const debug = require('debug')('app');
+  const express = require('express');
+  const http = require('http');
+  const bodyParser = require('body-parser');
+  const app = express();
+  const name = "server";
+
+  const Promise = require('promise');
+  const port = process.env.PORT || 8080;
 
   const yelp = require('yelp-fusion');
-
+  const client = yelp.client('b949muszPxlQ1MQEAboWnFbRBK_On-XD4qKsyP4VDIx9bCeaeWAv5BYxwzBYU9VvnpffitkF6VMVR8EuzfgvWfV4FwZO0mXmgdq4y__cnj5dlukfDra9-v0-Dv_cWHYx')
   app.use(express.static('public'));
 
   //const client = yelp.client(token);
@@ -28,33 +28,44 @@ var Module = (function() {
   // create application/x-www-form-urlencoded parser
   app.use(bodyParser.urlencoded({extended: true}));
 
-  //handle post requests
-  app.post('/p', async function(req, res) {
-
+  //handle post requests for getting yelp data
+  app.post('/post', async function(req, res) {
+    let yelpInData = []
+    let result = null;
     req.body.forEach((item) => {
       yelpInData.push(item);
     });
 
-    let result = await handleYelp(yelpInData);
-    console.log(result);
-
+    result = await handleYelp(yelpInData);
+    //send data back to the front end
     res.send(result);
 
   });
 
+  //handle yelp api
   async function handleYelp(yelpInData) {
+    let yelpData = [];
 
-    return yelp.accessToken('euqH0_vzVDHpkWNkOrRvRg', 'zBM0qybw8qfqd6Rp9l9qef3i8niXOfM2oft0IHx68yxhBPNfehHA0r6pfULQunN9').then(async (response) => {
-      const client = yelp.client(response.jsonBody.access_token);
-      var yelpPromises = [];
-      yelpInData.forEach((item, i) => {
-        let coords = yelpInData[i].coords.lat + "," + yelpInData[i].coords.lng;
-        let name = yelpInData[i].name;
+    for (let i = 0, len = yelpInData.length; i < len; i++) {
+      let result = await searchPlace(yelpInData[i]);
+      yelpData.push(result);
+    }
+    //  console.log(yelpData);
+    return yelpData;
 
-        yelpPromises[i] = client.search({term: name, location: coords}).then(response => {
+  }
+
+  function searchPlace(city) {
+    //console.log(city)
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        let coords = city.coords.lat + "," + city.coords.lng;
+        let name = city.name;
+
+        client.search({term: name, location: coords}).then(response => {
 
           //name, img url, review count, rating, price, location.display address, is closed,phone
-          return {
+          resolve({
             name: response.jsonBody.businesses[0].name,
             img: response.jsonBody.businesses[0].image_url,
             hours: response.jsonBody.businesses[0].is_closed,
@@ -64,19 +75,12 @@ var Module = (function() {
             location: response.jsonBody.businesses[0].location.display_address.toString(),
             phone: response.jsonBody.businesses[0].display_phone,
             url: response.jsonBody.businesses[0].url
-          };
+          });
 
         }).catch(e => {
-          //console.log(e);
+          console.log(e);
         });
-      });
-      let results = await Promise.all(yelpPromises);
-      //  console.log(results)
-      return results;
-
-    }).catch(e => {
-      //console.log(e);
-    });
-
+      }, 100);
+    })
   }
 })();

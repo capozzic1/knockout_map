@@ -76,11 +76,10 @@ var Module = (function() {
   var jsonStr = JSON.stringify(locations);
   //'https://gentle-fortress-70127.herokuapp.co/p',
   $.ajax({
-    url: '/p', type: "POST", contentType: "application/json", // <====
+    url: '/post', type: "POST", contentType: "application/json", // <====
     data: jsonStr,
     success: function(data) {
 
-      (data);
       $.each(data, function(i, location) {
         var htmlStr = "";
         var hours = "";
