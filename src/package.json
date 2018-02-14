@@ -3,8 +3,12 @@
   "version": "1.0.0",
   "description": "",
   "main": "server.js",
+  "engines": {
+    "node": "8.9.4",
+    "npm": "5.6.0"
+  },
   "scripts": {
-    "start": "nodemon public/server.js"
+    "start": "node public/server.js"
   },
   "author": "",
   "license": "ISC",
@@ -30,8 +34,5 @@
     "express": "^4.15.2",
     "promise": "^8.0.1"
   },
-  "engines": {
-    "node": "8.9.4",
-    "npm": "5.6.0"
-  }
+
 }
