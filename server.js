@@ -83,4 +83,6 @@ const Module = (function() {
       }, 100);
     })
   }
+
+  module.exports = app;
 })();
