@@ -17,10 +17,11 @@ const Module = (function() {
   app.use(express.static('public'));
 
   //const client = yelp.client(token);
-  app.listen(port, function() {
-    console.log('Example app listening on port' + port);
-  });
-
+  if (!module.parent) {
+    app.listen(port, function() {
+      console.log('Example app listening on port' + port);
+    });
+  }
   //allow cors
   app.use(cors());
   // create application/json parser
