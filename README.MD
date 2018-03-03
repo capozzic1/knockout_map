@@ -8,3 +8,5 @@ Features:
 
 -	Shows current weather information in Las Vegas
 -	Shows a list of fun places to go in downtown Las Vegas and some information pulled in from Yelp's API for each location.
+
+The demo is here: https://neighborhoodmapcc.herokuapp.com/
