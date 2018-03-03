@@ -82,15 +82,15 @@ var Module = (function() {
 
       $.each(data, function(i, location) {
         var htmlStr = "";
-        var hours = "";
-        console.log(location.hours);
-        if (location.hours == false) {
-          hours = "Is closed";
+        var isClosed = "";
+        console.log(location.isClosed);
+        if (location.isClosed == true) {
+          isClosed = "Is closed";
         } else {
-          hours = "Is open";
+          isClosed = "Is open";
         }
 
-        htmlStr += '<div class ="info">' + '<h2 class="name">' + location.name.toString() + '</h2>' + '<img class="buspic" src=' + location.img + " alt text='bus pic'" + '/>' + '<p class="hours">' + "<b>Open or closed: </b>" + hours + '</p>' + '<p class="reviews">' + "<b>Review count: </b>" + location.revcount + '</p>' + '<p class="rating">' + "<b>Rating: </b>" + location.rating + '</p>' + '<p class="price">' + "<b>Price range: </b>" + location.price + '</p>' + '<p class="location">' + "<b>Address: </b>" + location.location + '</p>' + '<p class="phone">' + "<b>Phone: </b>" + location.phone + '</p>' + '<a href="' + location.url + '">' + 'See more on yelp' + '</a>' + '</div>';
+        htmlStr += '<div class ="info">' + '<h2 class="name">' + location.name.toString() + '</h2>' + '<img class="buspic" src=' + location.img + " alt text='bus pic'" + '/>' + '<p class="hours">' + "<b>Open or closed: </b>" + isClosed + '</p>' + '<p class="reviews">' + "<b>Review count: </b>" + location.revcount + '</p>' + '<p class="rating">' + "<b>Rating: </b>" + location.rating + '</p>' + '<p class="price">' + "<b>Price range: </b>" + location.price + '</p>' + '<p class="location">' + "<b>Address: </b>" + location.location + '</p>' + '<p class="phone">' + "<b>Phone: </b>" + location.phone + '</p>' + '<a href="' + location.url + '">' + 'See more on yelp' + '</a>' + '</div>';
 
         contentsBefSort.push(htmlStr);
 
